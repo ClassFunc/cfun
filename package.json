@@ -2,16 +2,16 @@
   "name": "cfun",
   "version": "1.0.0",
   "description": "",
-  "main": "index.mjs",
+  "main": "src/index.mjs",
   "scripts": {
     "link": "npm link",
     "pre-publish": "npm publish --dry-run"
   },
   "bin": {
-    "cfun": "index.mjs"
+    "cfun": "src/index.mjs"
   },
   "files": [
-    "index.mjs",
+    "src/index.mjs",
     "templates"
   ],
   "keywords": [],
