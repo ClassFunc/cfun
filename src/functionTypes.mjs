@@ -1,11 +1,23 @@
 export const functionTypes = {
     firestore: {
-        document: ['onWrite', 'onUpdate', 'onCreate', 'onDelete'],
+        document: [
+            'onCreate',
+            'onUpdate',
+            'onDelete',
+            'onWrite',
+        ],
     },
     auth: {
         user: ['onCreate', 'onDelete'],
     },
     storage: {
+        object: [
+            // 'onChange',
+            'onFinalize',
+            'onArchive',
+            'onDelete',
+            'onMetadataUpdate',
+        ],
         bucket: {
             object: [
                 // 'onChange',
@@ -15,17 +27,10 @@ export const functionTypes = {
                 'onMetadataUpdate',
             ],
         },
-        object: [
-            // 'onChange',
-            'onFinalize',
-            'onArchive',
-            'onDelete',
-            'onMetadataUpdate',
-        ],
     },
     pubsub: {
-        topic: ['onPublish'],
         schedule: ['onRun'],
+        topic: ['onPublish'],
     },
     https: ['onRequest', 'onCall'],
     // 'database',

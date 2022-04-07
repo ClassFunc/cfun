@@ -15,21 +15,29 @@ try {
     console.log(answer);
 
     const {
+        //
         type,
         builder,
         trigger,
-        fieldName,
+        //
         firestoreWritePath,
         firestoreDocPath,
+        fieldName,
+        //
+        bucketName,
+        //
+        routeName,
+        //
+        schedule,
+        scheduleName,
     } = answer;
 
     const rootDir = process.cwd().split('/functions')?.[0];
-    const templateDir = path.join(rootDir, 'templates');
     const functionsDir = path.join(rootDir, 'functions');
     const basePath = path.join(type, path.join(...builder), trigger);
 
-    let content = await (await fetch(
-        TEMPLATES_GITHUB + basePath + '.js')).text();
+    let content =
+        await (await fetch(TEMPLATES_GITHUB + basePath + '.js')).text();
 
     let writeFilePath;
     switch (type) {
@@ -45,15 +53,50 @@ try {
                 fieldName,
             });
             break;
-        default:
+        case 'storage':
+            if (!bucketName)
+                break;
             writeFilePath = path.join(
                 functionsDir,
-                funcFileName(basePath),
+                type,
+                builder[0],
+                bucketName,
+                builder[1],
+                funcFileName(trigger),
             );
+            content = template(content)({
+                bucketName,
+            });
+            break;
+        case 'https':
+            writeFilePath = path.join(
+                functionsDir,
+                type,
+                trigger,
+                funcFileName(routeName),
+            );
+            break;
+        case 'pubsub':
+            writeFilePath = path.join(
+                functionsDir,
+                ...builder,
+                scheduleName,
+            );
+            content = template(content)({
+                schedule,
+            });
+        default:
             break;
     }
 
-    console.log({rootDir, templateDir, functionsDir, basePath, writeFilePath});
+    if (!writeFilePath) {
+        writeFilePath = path.join(
+            functionsDir,
+            funcFileName(basePath),
+        );
+    }
+
+    // console.log({rootDir, functionsDir, basePath, writeFilePath});
 
     if (!fs.existsSync(writeFilePath)) {
         fs.createFileSync(writeFilePath);

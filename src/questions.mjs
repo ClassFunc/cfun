@@ -3,23 +3,36 @@ import get from 'lodash/get.js';
 import isArray from 'lodash/isArray.js';
 import replace from 'lodash/replace.js';
 import camelCase from 'lodash/camelCase.js';
+import trimEnd from 'lodash/trimEnd.js';
 import {functionTypes} from './functionTypes.mjs';
 
 export const TEMPLATES_GITHUB = 'https://raw.githubusercontent.com/ClassFunc/cfun/master/templates/';
 
 const questionType = async () => {
+    //common
     let type;
     let builder = [];
     let trigger;
-    let firestoreCollectionPath = '';
 
+    //firestore
+    let firestoreCollectionPath = '';
     let firestoreWritePath = [];
     let firestoreDocPath = [];
     let fieldName = '';
 
+    //bucket
+    let bucketName = '';
+
+    //https
+    let routeName = '';
+
+    //pubsub
+    let schedule = '';
+    let scheduleName = '';
+
     const types = Object.keys(functionTypes);
     type = await question(
-        `Type of functions [${chalk.cyan(types.join(', '))}] ? `,
+        `Type of functions [${chalk.cyan(types.join(' , '))}] ? `,
         {choices: types});
 
     const builderOrTriggers = functionTypes[type];
@@ -46,31 +59,66 @@ const questionType = async () => {
                 firestoreCollectionPath =
                     replace(firestoreCollectionPath, '/', '');
             }
-            const paths = firestoreCollectionPath.split('/');
-
+            let paths = firestoreCollectionPath.split('/');
+            if (paths.length % 2 === 1) {
+                //append fake document path
+                paths.push('fakeDocumentPath');
+            }
             paths.map((p, idx) => {
                 if (idx % 2 === 1) {
-                    firestoreDocPath.push(`{${camelCase(paths[idx - 1])}Id}`);
+                    //case p is document name;
+                    const collName = paths[idx - 1];
+                    const docName = collName.endsWith('s') ?
+                        trimEnd(collName, 's')
+                        : collName;
+                    firestoreDocPath.push(`{${camelCase(docName)}Id}`);
                 } else {
-                    // p is collection name;
+                    // case p is collection name;
                     firestoreDocPath.push(p);
                     firestoreWritePath.push(p);
                 }
             });
             if (trigger === 'onWrite' || trigger === 'onUpdate')
                 fieldName = await question(
-                    `Watch for field ${chalk.blue('[enter for all]')} ? `);
+                    `Watch for field ${chalk.gray('[enter for all]')} ? `);
+            break;
+        case 'storage':
+            if (!builder.includes('bucket'))
+                break;
+            bucketName = await question(`Bucket name ? `);
+            break;
+        case 'https':
+            routeName = await question(`Route name ? `);
+            break;
+        case 'pubsub':
+            schedule = await question(
+                `Schedule ${chalk.gray('ex: every 15 minutes')} ? `);
+            scheduleName = await question(
+                `Schedule Name ${chalk.gray('ex: backup')} ? `);
             break;
     }
 
     return {
+        //COMMON
         type,
         builder,
         trigger,
+
+        //firestore
         firestoreCollectionPath,
         firestoreWritePath,
         firestoreDocPath,
         fieldName,
+
+        // storage
+        bucketName,
+
+        // https
+        routeName,
+
+        //pubsub
+        schedule,
+        scheduleName,
     };
 };
 const questionBuilder = async (builders) => {
@@ -83,7 +131,7 @@ const questionBuilder = async (builders) => {
     let builder;
     if (builders.length > 1) {
         builder = await question(
-            `builder [${chalk.cyan(builders.join(', '))}] ? `,
+            `builder [${chalk.cyan(builders.join(' , '))}] ? `,
             {choices: builders});
     } else {
         builder = builders[0];
@@ -96,7 +144,7 @@ const questionTrigger = async (triggers) => {
         trigger = triggers[0];
     } else {
         trigger = await question(
-            `trigger [${chalk.cyan(triggers.join(', '))}] ? `,
+            `Trigger [${chalk.cyan(triggers.join(' , '))}] ? `,
             {choices: triggers});
     }
 
