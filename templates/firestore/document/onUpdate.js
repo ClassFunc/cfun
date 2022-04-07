@@ -1,4 +1,6 @@
-const functions = require('firebase-functions');
+let functions = require('firebase-functions');
+functions = functions.region('asia-northeast1');
+
 const {diffValues} = require("classfunc-helpers/diff");
 const {logJSON} = require("classfunc-helpers/json");
 
