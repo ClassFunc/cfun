@@ -12,7 +12,7 @@ templateSettings.interpolate = /{{([\s\S]+?)}}/g;
 try {
     const answer = await questionType();
 
-    console.log(answer);
+    // console.log(answer);
 
     const {
         //
@@ -79,8 +79,9 @@ try {
         case 'pubsub':
             writeFilePath = path.join(
                 functionsDir,
+                type,
                 ...builder,
-                scheduleName,
+                funcFileName(scheduleName),
             );
             content = template(content)({
                 schedule,

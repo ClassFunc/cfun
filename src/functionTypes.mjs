@@ -30,7 +30,7 @@ export const functionTypes = {
     },
     pubsub: {
         schedule: ['onRun'],
-        topic: ['onPublish'],
+        // topic: ['onPublish'],
     },
     https: ['onRequest', 'onCall'],
     // 'database',

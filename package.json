@@ -11,8 +11,7 @@
     "cfun": "src/index.mjs"
   },
   "files": [
-    "src/index.mjs",
-    "templates"
+    "src"
   ],
   "keywords": [],
   "author": "",
