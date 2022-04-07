@@ -14,10 +14,10 @@
     "src"
   ],
   "keywords": [],
-  "author": "",
+  "author": "CLASSFUNC SOFTWARES.,JSC",
   "license": "ISC",
+  "repository": "ClassFunc/cfun",
   "devDependencies": {
-    "esbuild": "^0.14.34",
     "zx": "^6.0.7"
   },
   "dependencies": {
