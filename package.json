@@ -1,7 +1,7 @@
 {
   "name": "cfun",
-  "version": "1.0.0",
-  "description": "",
+  "version": "1.0.1",
+  "description": "Create cloud functions like a boss",
   "main": "src/index.mjs",
   "scripts": {
     "link": "npm link",
@@ -15,7 +15,7 @@
   ],
   "keywords": [],
   "author": "CLASSFUNC SOFTWARES.,JSC",
-  "license": "ISC",
+  "license": "MIT",
   "repository": "ClassFunc/cfun",
   "devDependencies": {
     "zx": "^6.0.7"
