@@ -10,7 +10,7 @@ npm i -g cfun
 
 ### Usage:
 
-In root project terminal, typing:
+In project's root terminal, typing:
 
 ```sh
 cfun
@@ -21,30 +21,19 @@ cfun
 ### Function types and actions:
 
 ```js
+const functionTypes = {
     firestore: {
-    document: [
-        'onCreate',
-        'onUpdate',
-        'onDelete',
-        'onWrite',
-    ],
-}
-,
-auth: {
-    user: ['onCreate', 'onDelete'],
-}
-,
-storage: {
-    object: [
-        // 'onChange',
-        'onFinalize',
-        'onArchive',
-        'onDelete',
-        'onMetadataUpdate',
-    ],
-        bucket
-:
-    {
+        document: [
+            'onCreate',
+            'onUpdate',
+            'onDelete',
+            'onWrite',
+        ],
+    },
+    auth: {
+        user: ['onCreate', 'onDelete'],
+    },
+    storage: {
         object: [
             // 'onChange',
             'onFinalize',
@@ -52,16 +41,26 @@ storage: {
             'onDelete',
             'onMetadataUpdate',
         ],
-    }
-,
-}
-,
-pubsub: {
-    schedule: ['onRun'],
-    // topic: ['onPublish'],
-}
-,
-https: ['onRequest', 'onCall'],
+        bucket: {
+            object: [
+                // 'onChange',
+                'onFinalize',
+                'onArchive',
+                'onDelete',
+                'onMetadataUpdate',
+            ],
+        },
+    },
+    pubsub: {
+        schedule: ['onRun'],
+        // topic: ['onPublish'],
+    },
+    https: ['onRequest', 'onCall'],
+    // 'database',
+    // 'remote config',
+    // 'analytics',
+    // 'testlab'
+};
 ```
 
 ### License:

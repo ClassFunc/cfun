@@ -1,6 +1,6 @@
 {
   "name": "cfun",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Create cloud functions like a boss",
   "main": "src/index.mjs",
   "scripts": {
@@ -13,7 +13,11 @@
   "files": [
     "src"
   ],
-  "keywords": [],
+  "keywords": [
+    "gcloud",
+    "functions",
+    "firebase"
+  ],
   "author": "CLASSFUNC SOFTWARES.,JSC",
   "license": "MIT",
   "repository": "ClassFunc/cfun",
